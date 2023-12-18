@@ -41,7 +41,7 @@ export default function Registrazione() {
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="inline-full-name"
+              htmlFor="registration-name"
             >
               Nome
             </label>
@@ -50,7 +50,7 @@ export default function Registrazione() {
             <input
               {...register("name")}
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
+              id="registration-name"
               type="text"
             />
             {errors.name && (
@@ -64,7 +64,7 @@ export default function Registrazione() {
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="inline-full-name"
+              htmlFor="registration-surname"
             >
               Cognome
             </label>
@@ -73,7 +73,7 @@ export default function Registrazione() {
             <input
               {...register("surname")}
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
+              id="registration-surname"
               type="text"
             />
             {errors.surname && (
@@ -87,7 +87,7 @@ export default function Registrazione() {
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="inline-full-name"
+              htmlFor="registration-email"
             >
               Email
             </label>
@@ -96,7 +96,7 @@ export default function Registrazione() {
             <input
               {...register("email")}
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
+              id="registration-email"
               type="email"
             />
             {errors?.surname && (
@@ -111,7 +111,7 @@ export default function Registrazione() {
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="inline-full-name"
+              htmlFor="registration-phone"
             >
               Telefono
             </label>
@@ -120,7 +120,7 @@ export default function Registrazione() {
             <input
               {...register("phone")}
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-              id="inline-full-name"
+              id="registration-phone"
               type="phone"
             />
             {errors.surname && (
@@ -136,6 +136,7 @@ export default function Registrazione() {
           <div className="md:w-2/3  d-flex direction-column">
             <label className="block text-gray-500 font-bold ">
               <input
+                id="registration-privacyAccept"
                 {...register("privacyAccept", { required: true })}
                 className="mr-2 leading-tight"
                 type="checkbox"
