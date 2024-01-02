@@ -35,7 +35,7 @@ export default function Coach() {
   return (
     <main className="flex flex-col items-center p-24">
       <h1 className="text-3xl font-bold underline">Coach</h1>
-
+      <h1>{JSON.stringify(user)}</h1>
       {user ? (
         <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
           <div className="md:flex md:items-center mb-6">
