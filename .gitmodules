@@ -1,0 +1,3 @@
+[submodule "submodule-villaggio"]
+	path = submodule-villaggio
+	url = https://github.com/andreacazzola90/villaggio
