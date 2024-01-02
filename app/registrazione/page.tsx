@@ -1,6 +1,8 @@
 "use client";
+import { useRef } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
+import QRCode from "react-qr-code";
 import * as yup from "yup";
 
 type IFormInput = {
@@ -27,15 +29,46 @@ export default function Registrazione() {
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
-
+  const refQRCode: any = useRef(null);
   const onSubmit = (data: IFormInput) => {
     console.log(data);
+    refQRCode.current.showModal();
   };
 
   return (
     <main className="flex flex-col items-center p-24">
       <h1 className="text-3xl font-bold underline">Registrazione</h1>
 
+      <dialog id="my_modal_1" className="modal" ref={refQRCode}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">
+            Press ESC key or click the button below to close
+          </p>
+          <div
+            style={{
+              height: "auto",
+              margin: "0 auto",
+              maxWidth: 1024,
+              width: "100%",
+            }}
+          >
+            <QRCode
+              size={1024}
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              value={"ciao"}
+              viewBox={`0 0 1024 1024`}
+            />
+          </div>
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
       <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
