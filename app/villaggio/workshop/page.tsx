@@ -22,7 +22,7 @@ export default function Workshop() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex flex-col items-center p-24">
       <h1 className="text-3xl font-bold underline">Coach</h1>
 
       <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
