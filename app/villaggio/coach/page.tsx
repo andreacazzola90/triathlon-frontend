@@ -1,8 +1,9 @@
 "use client";
+import Modal from "@/app/components/Modal";
 import ScanQrCode from "@/app/components/scan-qr-code";
 import { useUser } from "@/app/context/userContext";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -10,8 +11,7 @@ type IFormInput = {
   dateOfBirth?: Date;
   weight?: number;
   athleteLevel?: string;
-  phone?: number;
-  privacyAccept?: boolean;
+  goal?: string;
 };
 const schema = yup.object().shape({
   dateOfBirth: yup.date().required(),
@@ -26,10 +26,31 @@ export default function Coach() {
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
-  const { user } = useUser();
+  const { user, updateUser, logout } = useUser();
+  const [modalToogle, setModalToogle] = useState(false);
+  const modalRef = useRef();
 
   const onSubmit = (data: IFormInput) => {
     console.log(data);
+    updateUser({ ...user, ...data });
+    const apiUrl = process.env.NEXT_PUBLIC_API_HOST + "users/" + user?.id;
+    fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        updateUser({ ...user, ...data });
+        setModalToogle(!modalToogle);
+        logout();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -146,6 +167,7 @@ export default function Coach() {
         <ScanQrCode />
       )}
       <p className="break-all">{JSON.stringify(user)}</p>
+      <Modal title="Dati aggiornati" open={modalToogle}></Modal>
     </main>
   );
 }

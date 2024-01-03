@@ -10,14 +10,18 @@ export const BarcodeScanner = () => {
       setResult(result.getText());
     },
   });
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_HOST + "users";
+
   useEffect(() => {
     if (result) {
       console.log(result);
 
-      fetch("https://jsonplaceholder.typicode.com/users/1")
+      fetch(apiUrl)
         .then((response) => response.json())
         .then((json) => {
-          login(json);
+          const userExist = json.find((user: any) => user.sku === result);
+          userExist ? login(userExist) : null;
         });
     }
   }, [result]);

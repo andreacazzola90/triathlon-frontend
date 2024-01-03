@@ -13,23 +13,9 @@ const schema = yup.object().shape({
 });
 
 export default function ScanQrCode() {
-  const { user } = useUser();
-  const [result, setResult] = useState<string | null>(null);
-
-  const handleScan = (data: string | null) => {
-    if (data) {
-      setResult(data);
-    }
-  };
-
-  const handleError = (error: any) => {
-    console.error(error);
-  };
-
   return (
     <main className="flex flex-col items-center">
       <h1 className="text font-bold ">Scansiona il qr-code dell'utente</h1>
-
       <BarcodeScanner />
     </main>
   );

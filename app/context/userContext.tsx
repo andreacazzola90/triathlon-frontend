@@ -2,14 +2,22 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface User {
-  name: string;
-  isLoggedIn: boolean;
+  id?: number;
+  name?: string;
+  isLoggedIn?: boolean;
+  dateOfBirth?: Date;
+  weight?: number;
+  goal?: string;
+  athleteLevel?: string;
+  phone?: number;
+  privacyAccept?: boolean;
   // Aggiungi altre proprietà utente se necessario
 }
 
 interface UserContextProps {
   user: User | null;
   login: (userData: User) => void;
+  updateUser: (userData: User) => void;
   logout: () => void;
 }
 
@@ -29,9 +37,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const logout = () => {
     setUser(null);
   };
+  const updateUser = (userData: User) => {
+    setUser(userData);
+  };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );

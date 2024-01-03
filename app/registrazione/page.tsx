@@ -1,10 +1,11 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import QRCode from "react-qr-code";
 import * as yup from "yup";
 import HeaderTitle from "../components/HeaderTitle";
+import { v4 } from "uuid";
 
 type IFormInput = {
   name?: string | undefined;
@@ -30,10 +31,41 @@ export default function Registrazione() {
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
+  const [initSku, setInitSku] = useState("");
   const refQRCode: any = useRef(null);
+
+  useEffect(() => {
+    setInitSku(v4());
+  }, []);
+
   const onSubmit = (data: IFormInput) => {
     console.log(data);
-    refQRCode.current.showModal();
+    console.log(initSku);
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_HOST + "users";
+    fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        createdAt: new Date(),
+        name: data.name,
+        surname: data.surname,
+        sku: initSku,
+        email: data.email,
+        phone: data.phone,
+        privacyAccept: data.privacyAccept,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        refQRCode.current.showModal();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -180,7 +212,7 @@ export default function Registrazione() {
             <QRCode
               size={1024}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={"ciao"}
+              value={initSku}
               viewBox={`0 0 1024 1024`}
             />
           </div>

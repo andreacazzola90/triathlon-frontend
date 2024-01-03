@@ -8,7 +8,7 @@ export default function HeaderTitle({
   return (
     <h1
       className={`text-2xl font-bold ${
-        theme === "dark" ? "text-white" : "text-black"
+        theme === "" ? "text-white" : "text-black"
       }`}
     >
       {title}
