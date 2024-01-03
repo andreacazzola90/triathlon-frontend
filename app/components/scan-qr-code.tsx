@@ -27,8 +27,8 @@ export default function ScanQrCode() {
   };
 
   return (
-    <main className="flex flex-col items-center p-24">
-      <h1 className="text-3xl font-bold ">Scansiona il qr-code dell'utente</h1>
+    <main className="flex flex-col items-center">
+      <h1 className="text font-bold ">Scansiona il qr-code dell'utente</h1>
 
       <BarcodeScanner />
     </main>

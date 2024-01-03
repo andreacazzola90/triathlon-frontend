@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import QRCode from "react-qr-code";
 import * as yup from "yup";
+import HeaderTitle from "../components/HeaderTitle";
 
 type IFormInput = {
   name?: string | undefined;
@@ -36,39 +37,8 @@ export default function Registrazione() {
   };
 
   return (
-    <main className="flex flex-col items-center p-24">
-      <h1 className="text-3xl font-bold underline">Registrazione</h1>
-
-      <dialog id="my_modal_1" className="modal" ref={refQRCode}>
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">
-            Press ESC key or click the button below to close
-          </p>
-          <div
-            style={{
-              height: "auto",
-              margin: "0 auto",
-              maxWidth: 1024,
-              width: "100%",
-            }}
-          >
-            <QRCode
-              size={1024}
-              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={"ciao"}
-              viewBox={`0 0 1024 1024`}
-            />
-          </div>
-
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
+    <main className="flex flex-col items-center ">
+      <HeaderTitle title="Registrazione" />
       <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
@@ -82,7 +52,7 @@ export default function Registrazione() {
           <div className="md:w-2/3 d-block">
             <input
               {...register("name")}
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="input input-primary"
               id="registration-name"
               type="text"
             />
@@ -105,7 +75,7 @@ export default function Registrazione() {
           <div className="md:w-2/3 d-block">
             <input
               {...register("surname")}
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="input input-primary"
               id="registration-surname"
               type="text"
             />
@@ -128,7 +98,7 @@ export default function Registrazione() {
           <div className="md:w-2/3 d-block">
             <input
               {...register("email")}
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="input input-primary"
               id="registration-email"
               type="email"
             />
@@ -152,7 +122,7 @@ export default function Registrazione() {
           <div className="md:w-2/3 d-block">
             <input
               {...register("phone")}
-              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              className="input input-primary"
               id="registration-phone"
               type="phone"
             />
@@ -187,15 +157,42 @@ export default function Registrazione() {
         <div className="md:flex md:items-center">
           <div className="md:w-1/3" />
           <div className="md:w-2/3">
-            <button
-              className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-              type="submit"
-            >
+            <button className="button btn btn-accent" type="submit">
               Sign Up
             </button>
           </div>
         </div>
       </form>
+      <dialog id="my_modal_1" className="modal" ref={refQRCode}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">
+            Press ESC key or click the button below to close
+          </p>
+          <div
+            style={{
+              height: "auto",
+              margin: "0 auto",
+              maxWidth: 1024,
+              width: "100%",
+            }}
+          >
+            <QRCode
+              size={1024}
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              value={"ciao"}
+              viewBox={`0 0 1024 1024`}
+            />
+          </div>
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </main>
   );
 }

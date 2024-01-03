@@ -25,3 +25,10 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.input{
+  @apply w-full;
+}
+.btn-accent{
+  @apply bg-accent text-white ;
+}
