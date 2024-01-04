@@ -1,16 +1,12 @@
 "use client";
+import Modal from "@/app/components/Modal";
 import ScanQrCode from "@/app/components/scan-qr-code";
-import { useUser } from "@/app/context/userContext";
+import { IFormTecnogym, useUser } from "@/app/context/userContext";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-type IFormInput = {
-  cadence?: string;
-  supportTime?: string;
-  verticalOscillation?: string;
-  symmetry?: string;
-};
 const schema = yup.object().shape({
   cadence: yup.string().required(),
   supportTime: yup.string().required(),
@@ -18,18 +14,19 @@ const schema = yup.object().shape({
   symmetry: yup.string().required(),
 });
 export default function Tecnogym() {
+  const { user, updateUser, logout } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({ resolver: yupResolver(schema) });
-  const { user } = useUser();
+  const [modalToogle, setModalToogle] = useState(false);
 
-  const onSubmit = (data: IFormInput) => {
+  const onSubmit = (data: IFormTecnogym) => {
     console.log(data);
+    updateUser(data);
+    setModalToogle(true);
   };
-
   return (
     <main className="flex flex-col items-center">
       <h1 className="text-3xl font-bold underline">Coach</h1>
@@ -143,6 +140,14 @@ export default function Tecnogym() {
       ) : (
         <ScanQrCode />
       )}
+      <Modal
+        title="Dati aggiornati"
+        open={modalToogle}
+        onClose={() => {
+          logout();
+          setModalToogle(false);
+        }}
+      ></Modal>
     </main>
   );
 }

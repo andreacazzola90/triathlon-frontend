@@ -1,31 +1,30 @@
 "use client";
+import Modal from "@/app/components/Modal";
 import ScanQrCode from "@/app/components/scan-qr-code";
-import { useUser } from "@/app/context/userContext";
+import { IFormPhotoboot, useUser } from "@/app/context/userContext";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-type IFormInput = {
-  shoeBrand?: string;
-  shoeModelTested?: string;
-  shoeSizeTested?: string;
-};
 const schema = yup.object().shape({
   shoeBrand: yup.string().required(),
   shoeModelTested: yup.string().required(),
   shoeSizeTested: yup.string().required(),
 });
 export default function Photoboot() {
+  const { user, updateUser, logout } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({ resolver: yupResolver(schema) });
-  const { user } = useUser();
+  const [modalToogle, setModalToogle] = useState(false);
 
-  const onSubmit = (data: IFormInput) => {
+  const onSubmit = (data: IFormPhotoboot) => {
     console.log(data);
+    updateUser(data);
+    setModalToogle(true);
   };
 
   return (
@@ -118,6 +117,14 @@ export default function Photoboot() {
       ) : (
         <ScanQrCode />
       )}
+      <Modal
+        title="Dati aggiornati"
+        open={modalToogle}
+        onClose={() => {
+          logout();
+          setModalToogle(false);
+        }}
+      ></Modal>
     </main>
   );
 }

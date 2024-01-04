@@ -1,29 +1,30 @@
 "use client";
+import Modal from "@/app/components/Modal";
 import ScanQrCode from "@/app/components/scan-qr-code";
-import { useUser } from "@/app/context/userContext";
+import { IFormNegozioRetail, useUser } from "@/app/context/userContext";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-type IFormInput = {
-  confirmPurchase?: boolean;
-  shoeModelPurchased?: string;
-};
 const schema = yup.object().shape({
   confirmPurchase: yup.bool().required(),
   shoeModelPurchased: yup.string().required(),
 });
 export default function negozioRetail() {
-  const { user } = useUser();
+  const { user, updateUser, logout } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
+  const [modalToogle, setModalToogle] = useState(false);
 
-  const onSubmit = (data: IFormInput) => {
+  const onSubmit = (data: IFormNegozioRetail) => {
     console.log(data);
+    updateUser(data);
+    setModalToogle(true);
   };
 
   return (
@@ -44,7 +45,7 @@ export default function negozioRetail() {
               <input
                 {...register("confirmPurchase")}
                 type="checkbox"
-                className=" checkbox "
+                className="checkbox"
               />
               {errors.confirmPurchase && (
                 <p className="text-red-500 text-xs italic">
@@ -92,6 +93,14 @@ export default function negozioRetail() {
       ) : (
         <ScanQrCode />
       )}
+      <Modal
+        title="Dati aggiornati"
+        open={modalToogle}
+        onClose={() => {
+          logout();
+          setModalToogle(false);
+        }}
+      ></Modal>
     </main>
   );
 }

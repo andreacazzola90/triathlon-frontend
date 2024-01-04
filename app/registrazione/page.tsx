@@ -1,11 +1,13 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
-import QRCode from "react-qr-code";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { v4 } from "uuid";
 import * as yup from "yup";
 import HeaderTitle from "../components/HeaderTitle";
-import { v4 } from "uuid";
+import Logo from "../components/Logo";
+import { QRCode } from "react-qrcode-logo";
 
 type IFormInput = {
   name?: string | undefined;
@@ -56,6 +58,10 @@ export default function Registrazione() {
         email: data.email,
         phone: data.phone,
         privacyAccept: data.privacyAccept,
+        dateOfBirth: "",
+        weight: null,
+        athleteLevel: "",
+        goal: "",
       }),
     })
       .then((response) => response.json())
@@ -68,18 +74,38 @@ export default function Registrazione() {
       });
   };
 
+  const imgQrCode = (
+    <div className="d-flex justify-center max-w-full">
+      <QRCode
+        id="qrCodeimage"
+        value={initSku}
+        style={{ aspectRatio: "1/1", maxWidth: "100%", height: "auto" }}
+        size={500}
+      />
+    </div>
+  );
+
+  const downloadQrCode = () => {
+    var canvas: any = document.getElementById("qrCodeimage");
+    var url = canvas.toDataURL("image/png");
+    var link = document.createElement("a");
+    link.download = "filename.png";
+    link.href = url;
+    link.click();
+  };
+
   return (
     <main className="flex flex-col items-center ">
-      <HeaderTitle title="Registrazione" />
-      <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
-        <div className="md:flex md:items-center mb-6">
-          <div className="md:w-1/3">
-            <label
-              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="registration-name"
-            >
-              Nome
-            </label>
+      <Logo />
+      <HeaderTitle title="Welcome runner!" />
+      <form
+        id="registrationForm"
+        className="w-full max-w-sm"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="md:flex md:items-center mb-6 form-group">
+          <div className="md:w-1/3 ">
+            <label htmlFor="registration-name">Nome</label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -95,14 +121,9 @@ export default function Registrazione() {
             )}
           </div>
         </div>
-        <div className="md:flex md:items-center mb-6">
+        <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3">
-            <label
-              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="registration-surname"
-            >
-              Cognome
-            </label>
+            <label htmlFor="registration-surname">Cognome</label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -118,14 +139,9 @@ export default function Registrazione() {
             )}
           </div>
         </div>
-        <div className="md:flex md:items-center mb-6">
+        <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3">
-            <label
-              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="registration-email"
-            >
-              Email
-            </label>
+            <label htmlFor="registration-email">Email</label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -142,14 +158,9 @@ export default function Registrazione() {
           </div>
         </div>
 
-        <div className="md:flex md:items-center mb-6">
+        <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3">
-            <label
-              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-              htmlFor="registration-phone"
-            >
-              Telefono
-            </label>
+            <label htmlFor="registration-phone">Telefono</label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -166,10 +177,10 @@ export default function Registrazione() {
           </div>
         </div>
 
-        <div className="md:flex md:items-center mb-6">
+        <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3 " />
           <div className="md:w-2/3  d-flex direction-column">
-            <label className="block text-gray-500 font-bold ">
+            <label>
               <input
                 id="registration-privacyAccept"
                 {...register("privacyAccept", { required: true })}
@@ -186,10 +197,10 @@ export default function Registrazione() {
           </div>
         </div>
 
-        <div className="md:flex md:items-center">
+        <div className="md:flex md:items-center form-group">
           <div className="md:w-1/3" />
-          <div className="md:w-2/3">
-            <button className="button btn btn-accent" type="submit">
+          <div className="md:w-2/3 flex md:block">
+            <button className="button btn btn-accent mx-auto" type="submit">
               Sign Up
             </button>
           </div>
@@ -201,27 +212,18 @@ export default function Registrazione() {
           <p className="py-4">
             Press ESC key or click the button below to close
           </p>
-          <div
-            style={{
-              height: "auto",
-              margin: "0 auto",
-              maxWidth: 1024,
-              width: "100%",
-            }}
-          >
-            <QRCode
-              size={1024}
-              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={initSku}
-              viewBox={`0 0 1024 1024`}
-            />
-          </div>
-
+          {imgQrCode}
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <button className="btn">Close</button>
             </form>
+            <button
+              onClick={() => downloadQrCode()}
+              className="btn btn-success"
+            >
+              Download QR-code
+            </button>
           </div>
         </div>
       </dialog>

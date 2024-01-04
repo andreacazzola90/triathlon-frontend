@@ -24,33 +24,13 @@ export default function Coach() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({ resolver: yupResolver(schema) });
   const { user, updateUser, logout } = useUser();
   const [modalToogle, setModalToogle] = useState(false);
-  const modalRef = useRef();
 
   const onSubmit = (data: IFormInput) => {
-    console.log(data);
-    updateUser({ ...user, ...data });
-    const apiUrl = process.env.NEXT_PUBLIC_API_HOST + "users/" + user?.id;
-    fetch(apiUrl, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        updateUser({ ...user, ...data });
-        setModalToogle(!modalToogle);
-        logout();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    updateUser(data);
+    setModalToogle(true);
   };
 
   return (
@@ -167,7 +147,14 @@ export default function Coach() {
         <ScanQrCode />
       )}
       <p className="break-all">{JSON.stringify(user)}</p>
-      <Modal title="Dati aggiornati" open={modalToogle}></Modal>
+      <Modal
+        title="Dati aggiornati"
+        open={modalToogle}
+        onClose={() => {
+          logout();
+          setModalToogle(false);
+        }}
+      ></Modal>
     </main>
   );
 }

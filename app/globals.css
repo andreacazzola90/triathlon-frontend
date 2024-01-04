@@ -32,3 +32,13 @@ body {
 .btn-accent{
   @apply bg-accent text-white ;
 }
+.form-group{
+  label{
+    @apply block text-gray-500 font-bold  mb-1  pr-4 uppercase
+  }
+}
+
+#qrCodeimage{
+  max-Width: 100%;
+  height: auto!important;
+}

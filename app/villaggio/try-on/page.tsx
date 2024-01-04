@@ -1,31 +1,30 @@
 "use client";
+import Modal from "@/app/components/Modal";
 import ScanQrCode from "@/app/components/scan-qr-code";
-import { useUser } from "@/app/context/userContext";
+import { IFormTryOn, useUser } from "@/app/context/userContext";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-type IFormInput = {
-  becauseIRun?: string;
-  photo?: File;
-};
 const schema = yup.object().shape({
   becauseIRun: yup.string().required(),
   photo: yup.mixed(),
 });
 export default function tryOn() {
+  const { user, updateUser, logout } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({ resolver: yupResolver(schema) });
-  const { user } = useUser();
+  const [modalToogle, setModalToogle] = useState(false);
 
-  const onSubmit = (data: IFormInput) => {
+  const onSubmit = (data: IFormTryOn) => {
     console.log(data);
+    updateUser(data);
+    setModalToogle(true);
   };
-
   return (
     <main className="flex flex-col items-center">
       <h1 className="text-3xl font-bold underline">Try-on</h1>
@@ -90,6 +89,14 @@ export default function tryOn() {
       ) : (
         <ScanQrCode />
       )}
+      <Modal
+        title="Dati aggiornati"
+        open={modalToogle}
+        onClose={() => {
+          logout();
+          setModalToogle(false);
+        }}
+      ></Modal>
     </main>
   );
 }

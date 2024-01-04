@@ -1,7 +1,11 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface User {
+interface User
+  extends IFormNegozioRetail,
+    IFormPhotoboot,
+    IFormTecnogym,
+    IFormTryOn {
   id?: number;
   name?: string;
   isLoggedIn?: boolean;
@@ -11,8 +15,30 @@ interface User {
   athleteLevel?: string;
   phone?: number;
   privacyAccept?: boolean;
-  // Aggiungi altre proprietà utente se necessario
 }
+
+export type IFormNegozioRetail = {
+  confirmPurchase?: boolean;
+  shoeModelPurchased?: string;
+};
+
+export type IFormPhotoboot = {
+  shoeBrand?: string;
+  shoeModelTested?: string;
+  shoeSizeTested?: string;
+};
+
+export type IFormTecnogym = {
+  cadence?: string;
+  supportTime?: string;
+  verticalOscillation?: string;
+  symmetry?: string;
+};
+
+export type IFormTryOn = {
+  becauseIRun?: string;
+  photo?: File;
+};
 
 interface UserContextProps {
   user: User | null;
@@ -38,6 +64,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setUser(null);
   };
   const updateUser = (userData: User) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_HOST + "users/" + user?.id;
+    fetch(apiUrl, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUser({ ...user, ...data });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     setUser(userData);
   };
 
