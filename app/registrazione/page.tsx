@@ -8,6 +8,15 @@ import * as yup from "yup";
 import HeaderTitle from "../components/HeaderTitle";
 import Logo from "../components/Logo";
 import { QRCode } from "react-qrcode-logo";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+import Image from "next/image";
 
 type IFormInput = {
   name?: string | undefined;
@@ -93,11 +102,20 @@ export default function Registrazione() {
     link.href = url;
     link.click();
   };
+  const gallery = [
+    "https://placehold.co/600x400/000000/FFFFFF/png",
+    "https://placehold.co/600x400/000000/FFFFFF/png",
+    "https://placehold.co/600x400/000000/FFFFFF/png",
+    "https://placehold.co/600x400/000000/FFFFFF/png",
+  ];
 
   return (
     <main className="flex flex-col items-center ">
       <Logo />
-      <HeaderTitle title="Welcome runner!" />
+      <HeaderTitle
+        title="Welcome runner!"
+        description="ciao <span class='text-red'>come stai</span><br /> io molto bene"
+      />
       <form
         id="registrationForm"
         className="w-full max-w-sm"
@@ -105,7 +123,9 @@ export default function Registrazione() {
       >
         <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3 ">
-            <label htmlFor="registration-name">Nome</label>
+            <label htmlFor="registration-name" className="required">
+              Nome
+            </label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -113,6 +133,7 @@ export default function Registrazione() {
               className="input input-primary"
               id="registration-name"
               type="text"
+              placeholder="Mario"
             />
             {errors.name && (
               <p className="text-red-500 text-xs italic">
@@ -123,7 +144,9 @@ export default function Registrazione() {
         </div>
         <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3">
-            <label htmlFor="registration-surname">Cognome</label>
+            <label htmlFor="registration-surname" className="required">
+              Cognome
+            </label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -141,7 +164,9 @@ export default function Registrazione() {
         </div>
         <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3">
-            <label htmlFor="registration-email">Email</label>
+            <label htmlFor="registration-email" className="required">
+              Email
+            </label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -160,7 +185,9 @@ export default function Registrazione() {
 
         <div className="md:flex md:items-center mb-6 form-group">
           <div className="md:w-1/3">
-            <label htmlFor="registration-phone">Telefono</label>
+            <label htmlFor="registration-phone" className="required">
+              Telefono
+            </label>
           </div>
           <div className="md:w-2/3 d-block">
             <input
@@ -200,12 +227,37 @@ export default function Registrazione() {
         <div className="md:flex md:items-center form-group">
           <div className="md:w-1/3" />
           <div className="md:w-2/3 flex md:block">
-            <button className="button btn btn-accent mx-auto" type="submit">
+            <button
+              className="button btn btn-accent mx-auto btn-footer"
+              type="submit"
+            >
               Sign Up
             </button>
           </div>
         </div>
       </form>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        spaceBetween={50}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        className="h-96 w-full rounded-lg"
+      >
+        {gallery.map((image: any, i: number) => (
+          <SwiperSlide key={i}>
+            <div className="flex w-full h-full items-center justify-center">
+              <Image
+                src={image}
+                width={300}
+                height="300"
+                alt="img"
+                className="block h-full w-full object-cover"
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <dialog id="my_modal_1" className="modal" ref={refQRCode}>
         <div className="modal-box">
           <h3 className="font-bold text-lg">Hello!</h3>

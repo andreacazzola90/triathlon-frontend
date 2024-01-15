@@ -1,10 +1,16 @@
-import React from "react";
+import Image from "next/image";
 
 const Logo = () => {
   return (
     <div className="avatar">
       <div className="w-16 rounded my-5">
-        <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        <Image
+          src="/adidas-running-logo.svg"
+          alt="Adidas running Logo"
+          className=""
+          width={100}
+          height={24}
+        />
       </div>
     </div>
   );

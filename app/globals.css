@@ -16,29 +16,56 @@
   }
 }
 
+html,
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .input{
   @apply w-full;
 }
-.btn-accent{
-  @apply bg-accent text-white ;
-}
+.btn{
+  @apply uppercase border-none text-2xl min-w-60;
+  &.btn-accent {
+      @apply bg-accent text-bg;
+    }
+} 
+
 .form-group{
   label{
-    @apply block text-gray-500 font-bold  mb-1  pr-4 uppercase
+    @apply block text-black font-bold  mb-1  pr-4 uppercase;
+    &.required:after {
+        content: " *";
+        color: red;
+      }
   }
+  input{
+    @apply uppercase;
+    &.input-primary{
+      @apply border-none;
+    }
+    &[type='checkbox']{
+      background-color: #f1eee9;
+    }
+  }
+
 }
 
 #qrCodeimage{
   max-Width: 100%;
   height: auto!important;
 }
+
+.headerOutline{
+  opacity: 0.5;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: #df3012;
+  width: max-content;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 42%;
+  overflow-x: hidden;
+}
+

@@ -1,42 +1,20 @@
-"use client";
+import UserProfile from "../components/UserProfile";
 
-import { useEffect } from "react";
-import { useUser } from "@/app/context/userContext";
+type Props = {
+  params: {};
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
-import { useSearchParams } from "next/navigation";
-import Property from "../components/Property";
-
-export default function Profilo() {
-  const { user, updateUser } = useUser();
-
-  const searchParams = useSearchParams();
-
-  const userId = searchParams.get("userId");
-
-  useEffect(() => {
-    if (userId) {
-      const apiUrl = process.env.NEXT_PUBLIC_API_HOST + "users/" + userId;
-      fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          updateUser({ ...user, ...data });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [userId]);
+const Profilo = (props: Props) => {
+  const searchParams = props.searchParams;
+  const idUser: string = searchParams.userId?.toString() || "";
 
   return (
     <main className="flex flex-col items-center">
-      <h1>Profilo {userId}</h1>
-      <h1>{user && <Property data={user} />}</h1>
+      <h1>Profilo {idUser}</h1>
+      <UserProfile id={idUser} />
     </main>
   );
-}
+};
+
+export default Profilo;
